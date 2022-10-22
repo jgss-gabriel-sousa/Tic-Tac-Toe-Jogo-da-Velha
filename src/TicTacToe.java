@@ -1,5 +1,6 @@
 import javax.swing.*;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
@@ -12,8 +13,6 @@ public class TicTacToe extends JFrame {
 	JButton[] btn = new JButton[9];
 	JLabel[] results = new JLabel[3];
 	
-	JLabel langIcon = new JLabel();
-	
 	boolean xo = false;
 	boolean[] clicked = new boolean[9];
 	int xWins = 0;
@@ -22,7 +21,7 @@ public class TicTacToe extends JFrame {
 	
 	public TicTacToe() {
 		setVisible(true);
-		setTitle("Tic-tac-toe/Noughts and Crosses");
+		setTitle("Tic-Tac-Toe");
 		setDefaultCloseOperation(3);
 		setLayout(null);
 		setBounds(250,100,500,500);
@@ -38,6 +37,9 @@ public class TicTacToe extends JFrame {
 				
 				btn[id].setBounds((100*i)+50, (100*j)+50, 95, 95);
 				btn[id].setFont(new Font("Arial", Font.BOLD, 40));
+				btn[id].setBackground(Color.GRAY);
+				btn[id].setForeground(Color.WHITE);
+				btn[id].setBorder(BorderFactory.createBevelBorder(0));
 			}
 		}
 		
@@ -50,9 +52,6 @@ public class TicTacToe extends JFrame {
 			results[i].setLocation(375,(50*i)+10);
 		}
 		updateResults();
-		
-		langIcon.setIcon(new ImageIcon("icons/en.png"));
-		add(langIcon);
 
 		final int cells = rows*rowLength;
 		for(int i = 0; i < cells; i++) {
@@ -98,6 +97,7 @@ public class TicTacToe extends JFrame {
 		for(int i = 0; i < winCond.length; i++) {			
 			if(btn[winCond[i][0]].getText() ==  "X" && btn[winCond[i][1]].getText() == "X" && btn[winCond[i][2]].getText() == "X") {
 				win = true;
+				highlightBtn(winCond[i]);
 				JOptionPane.showMessageDialog(null, "X wins!!!");
 				xWins++;
 				resetGame();
@@ -109,6 +109,7 @@ public class TicTacToe extends JFrame {
 			for(int i = 0; i < winCond.length; i++) {			
 				if(btn[winCond[i][0]].getText() == "O" && btn[winCond[i][1]].getText() == "O" && btn[winCond[i][2]].getText() == "O") {
 					win = true;
+					highlightBtn(winCond[i]);
 					JOptionPane.showMessageDialog(null, "O wins!!!");
 					oWins++;
 					resetGame();
@@ -136,9 +137,16 @@ public class TicTacToe extends JFrame {
 	public void resetGame() {
 		for(int i = 0; i < btn.length; i++) {
 			btn[i].setText("");
+			btn[i].setForeground(Color.WHITE);
 			clicked[i] = false;
 		}
 		updateResults();
+	}
+	
+	public void highlightBtn(int ids[]) {
+		for(int i = 0; i < ids.length; i++) {
+			btn[ids[i]].setForeground(Color.RED);
+		}
 	}
 	
 	public void updateResults() {
